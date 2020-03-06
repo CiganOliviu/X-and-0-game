@@ -27,11 +27,51 @@ using algo_data_structures;
 
 namespace gameEngine
 {
+    class SetUpEnvironment
+    {
+        public static void initialiseMatrix(ref matrixType<char> matrixObject)
+        {
+             char initialisor = '0';
+
+            matrixObject = new matrixType<char>
+            {
+                Line = 3,
+                Column = 3
+            };
+
+            for (int iterator = matrixObject.StartLinePoint; iterator < matrixObject.Line; iterator++)
+                for (int jiterator = matrixObject.StartColumnPoint; jiterator < matrixObject.Column; jiterator++)
+                    matrixObject.matrix[iterator, jiterator] = initialisor;
+        }
+
+        public static void PutsMatrix(ref matrixType<char> matrixObject)
+        {
+
+            for (int iterator = matrixObject.StartLinePoint; iterator < matrixObject.Line; iterator++)
+            {
+                for (int jiterator = matrixObject.StartColumnPoint; jiterator < matrixObject.Column; jiterator++)
+                    Console.Write(matrixObject.matrix[iterator, jiterator] + " ");
+
+                Console.WriteLine();
+            }
+        }
+
+        public static void MatrixInitialisation(ref matrixType<char> matrixObject, char Value, limits<int> position)
+        {
+            matrixObject.matrix[position.minimLimit, position.maximLimit] = Value;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            matrixType<char> GameBoard = new matrixType<char>();
+
+            SetUpEnvironment.initialiseMatrix(ref GameBoard);
+
+            SetUpEnvironment.PutsMatrix(ref GameBoard);
+
         }
     }
 }
