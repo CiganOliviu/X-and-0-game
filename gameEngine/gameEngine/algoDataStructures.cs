@@ -3,6 +3,7 @@
 
     class generalSizes
     {
+        public const float zeroFloatSize = 0;
         public const int zeroSize = 0;
         public const int MATRIX_STD_LENGTH = 100;
         public const int STD_LENGTH = 10000;
@@ -74,26 +75,26 @@
 
     class linearEquation
     {
-        public float slope;
-        public float y_intercept;
-        public float root;
+        public float slope = generalSizes.zeroFloatSize;
+        public float y_intercept = generalSizes.zeroFloatSize;
+        public float root = generalSizes.zeroFloatSize;
     }
 
     class quadraticEquation
     {
-        public float coefficient_a;
-        public float coefficient_b;
-        public float coefficient_c;
+        private float standardInitialiser = 0;
+
+        public float coefficient_a = generalSizes.zeroFloatSize;
+        public float coefficient_b = generalSizes.zeroFloatSize;
+        public float coefficient_c = generalSizes.zeroFloatSize;
 
         limits<float> roots = new limits<float>();
     }
 
     class complexNumber
     {
-        private const float StandardComplexNumber = 1;
-
-        public float ComplexNumberLength = StandardComplexNumber;
-        public float RealPart = StandardComplexNumber;
-        public float ImaginaryPaty = StandardComplexNumber;
+        public float ComplexNumberLength = generalSizes.zeroFloatSize;
+        public float RealPart = generalSizes.zeroFloatSize;
+        public float ImaginaryPaty = generalSizes.zeroFloatSize;
     }
 }
