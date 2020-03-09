@@ -217,6 +217,11 @@ namespace gameEngine
 
             return false;
         }
+
+        public static int CharToInteger (char Chr)
+        {
+            return 0b0000_1111 & (byte) Chr;
+        }
     }
 
     class SetUpEnvironment
@@ -232,8 +237,8 @@ namespace gameEngine
                 Column = 3
             };
 
-            for (int iterator = matrixObject.StartLinePoint; iterator < matrixObject.Line; iterator++)
-                for (int jiterator = matrixObject.StartColumnPoint; jiterator < matrixObject.Column; jiterator++)
+            for (int iterator = matrixObject.StartLinePoint; iterator < matrixObject.Line + matrixObject.EndLinePoint; iterator++)
+                for (int jiterator = matrixObject.StartColumnPoint; jiterator < matrixObject.Column + matrixObject.EndColumnPoint; jiterator++)
                     matrixObject.matrix[iterator, jiterator] = initialisor;
         }
 
@@ -253,22 +258,128 @@ namespace gameEngine
 
         public static void MatrixItemInitialisation(ref matrixType<char> matrixObject, char Value, limits<int> position)
         {
-
+  
             if (validationRules.isBiggerThanLength(position.minimLimit, matrixObject.Line)) throw new System.ArgumentException("Cannot handle position bigger than line", "position.minimLimit");
             if (validationRules.isBiggerThanLength(position.maximLimit, matrixObject.Line)) throw new System.ArgumentException("Cannot handle position bigger than line", "position.maximLimit");
             if (validationRules.isBiggerThanLength(position.minimLimit, matrixObject.Column)) throw new System.ArgumentException("Cannot handle position bigger than column", "position.minimLimit");
             if (validationRules.isBiggerThanLength(position.maximLimit, matrixObject.Column)) throw new System.ArgumentException("Cannot handle position bigger than column", "position.maximLimit");
-
+        
             if (matrixObject.matrix[position.minimLimit, position.maximLimit] != '0') throw new System.ArgumentException("Cannot assign an already assigned position on board", "matrixObject.matrix[position.minimLimit, position.maximLimit]");
+            
 
             matrixObject.matrix[position.minimLimit, position.maximLimit] = Value;
+        }
+
+        private static bool BoardLineVerification (matrixType<char> matrixObject, int LineIndexNumber)
+        {
+
+            if (matrixObject.matrix[LineIndexNumber, 0] == '0') return false;
+            if (matrixObject.matrix[LineIndexNumber, 1] == '0') return false;
+            if (matrixObject.matrix[LineIndexNumber, 2] == '0') return false;
+
+            if ((matrixObject.matrix[LineIndexNumber, 0] == matrixObject.matrix[LineIndexNumber, 1]) && (matrixObject.matrix[LineIndexNumber, 1] == matrixObject.matrix[LineIndexNumber, 2])) return true;
+
+            return false;    
+        }
+
+        private static bool BoardColumnVerification (matrixType<char> matrixObject, int ColumnIndexNumber)
+        {
+
+            if (matrixObject.matrix[0, ColumnIndexNumber] == '0') return false;
+            if (matrixObject.matrix[1, ColumnIndexNumber] == '0') return false;
+            if (matrixObject.matrix[2, ColumnIndexNumber] == '0') return false;
+
+            if ((matrixObject.matrix[0, ColumnIndexNumber] == matrixObject.matrix[1, ColumnIndexNumber]) && (matrixObject.matrix[1, ColumnIndexNumber] == matrixObject.matrix[2, ColumnIndexNumber])) return true;
+
+            return false;
+        }
+
+        private static bool BoardMainDiagonalVerification(matrixType<char> matrixObject)
+        {
+
+            if (matrixObject.matrix[0, 0] == '0') return false;
+            if (matrixObject.matrix[1, 1] == '0') return false;
+            if (matrixObject.matrix[2, 2] == '0') return false;
+
+            if ((matrixObject.matrix[0, 0] == matrixObject.matrix[1, 1]) && (matrixObject.matrix[1, 1] == matrixObject.matrix[2, 2])) return true;
+
+            return false;
+
+        }
+
+        private static bool BoardSecondDiagonalVerification(matrixType<char> matrixObject)
+        {
+
+            if (matrixObject.matrix[0, 0] == '0') return false;
+            if (matrixObject.matrix[1, 1] == '0') return false;
+            if (matrixObject.matrix[2, 2] == '0') return false;
+
+            if ((matrixObject.matrix[2, 2] == matrixObject.matrix[1, 1]) && (matrixObject.matrix[1, 1] == matrixObject.matrix[0, 0])) return true;
+
+            return false;
+
+        }
+
+        public static bool BoardVerificationSystem (matrixType<char> matrixObject)
+        {
+            if (BoardLineVerification(matrixObject, 0)) return true;
+            if (BoardLineVerification(matrixObject, 2)) return true;
+
+            if (BoardColumnVerification(matrixObject, 0)) return true;
+            if (BoardColumnVerification(matrixObject, 2)) return true;
+
+            if (BoardMainDiagonalVerification(matrixObject)) return true;
+            if (BoardSecondDiagonalVerification(matrixObject)) return true;
+
+            return false;
         }
     }
 
     class GameEngine
-    {
-        private SetUpEnvironment setup = new SetUpEnvironment();
+    {   
+        
+        private static void EngineSetup (matrixType<char> matrixObject, char Value, limits<int> Position)
+        {
+            
+            SetUpEnvironment.MatrixItemInitialisation(ref matrixObject, Value, Position);
 
+            Console.WriteLine();
+
+            SetUpEnvironment.PutsMatrix(ref matrixObject);
+        }
+
+        public static char GameEngineArhitecture()
+        {
+
+            int RunTimeStopper = 0;
+            char Value;
+
+            matrixType<char> matrixObject = new matrixType<char>();
+            limits<char> CharPosition = new limits<char>();
+            limits<int> IntegerPosition = new limits<int>();
+            
+            SetUpEnvironment.InitialiseMatrix(ref matrixObject);
+
+            while (RunTimeStopper < 9)
+            {
+
+                Value = Console.ReadLine()[0];
+                
+                CharPosition.minimLimit = Console.ReadLine()[0];
+                CharPosition.maximLimit = Console.ReadLine()[0];
+
+                IntegerPosition.minimLimit = validationRules.CharToInteger(CharPosition.minimLimit);
+                IntegerPosition.maximLimit = validationRules.CharToInteger(CharPosition.maximLimit);
+
+                EngineSetup(matrixObject, Value, IntegerPosition);
+
+                if (SetUpEnvironment.BoardVerificationSystem(matrixObject)) return Value;
+
+                RunTimeStopper += 1;
+            }
+
+            return Char.MinValue;
+        }
 
     }
 
@@ -276,10 +387,8 @@ namespace gameEngine
     {
         static void Main(string[] args)
         {
-            matrixType<char> GameBoard = new matrixType<char>();
 
-            SetUpEnvironment.InitialiseMatrix(ref GameBoard);
-            SetUpEnvironment.PutsMatrix(ref GameBoard);
+            Console.WriteLine(GameEngine.GameEngineArhitecture());
         }
     }
 }
