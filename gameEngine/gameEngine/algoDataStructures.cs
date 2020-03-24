@@ -1,4 +1,4 @@
-﻿namespace algo_data_structures
+namespace algo_data_structures
 {
 
     class generalSizes
@@ -96,5 +96,11 @@
         public float ComplexNumberLength = generalSizes.zeroFloatSize;
         public float RealPart = generalSizes.zeroFloatSize;
         public float ImaginaryPaty = generalSizes.zeroFloatSize;
+    }
+
+    class centrum <Type> {
+
+        public Type data;
+        centrum<Type> nextLinkedValue = new centrum<Type>();
     }
 }
