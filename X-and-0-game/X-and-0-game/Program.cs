@@ -205,6 +205,7 @@
 
 using System;
 using algo_data_structures;
+using calculation_structures;
 
 namespace gameEngine
 {

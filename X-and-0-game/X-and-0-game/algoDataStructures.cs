@@ -91,37 +91,6 @@ SOFTWARE.
         public oneDimensionalArrayType <Type> verticesValency = new oneDimensionalArrayType<Type>();
     }
 
-    class limits <Type>
-    {
-        public Type minimLimit;
-        public Type maximLimit;
-    }
-
-    class linearEquation
-    {
-        public float slope = generalSizes.zeroFloatSize;
-        public float y_intercept = generalSizes.zeroFloatSize;
-        public float root = generalSizes.zeroFloatSize;
-    }
-
-    class quadraticEquation
-    {
-        private float standardInitialiser = 0;
-
-        public float coefficient_a = generalSizes.zeroFloatSize;
-        public float coefficient_b = generalSizes.zeroFloatSize;
-        public float coefficient_c = generalSizes.zeroFloatSize;
-
-        limits<float> roots = new limits<float>();
-    }
-
-    class complexNumber
-    {
-        public float ComplexNumberLength = generalSizes.zeroFloatSize;
-        public float RealPart = generalSizes.zeroFloatSize;
-        public float ImaginaryPaty = generalSizes.zeroFloatSize;
-    }
-
     class linkedCentrum <Type>
     {
 
